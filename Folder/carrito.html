@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Carrito de compras - Atelier. Revisa tus telas y procede con el pedido.">
+  <title>Carrito — Atelier | Telas Premium</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar navbar--solid" id="navbar">
+    <div class="navbar__container">
+      <a href="index.html" class="navbar__logo">Atelier</a>
+
+      <div class="navbar__menu" id="navMenu">
+        <a href="index.html" class="navbar__link" id="nav-home">Inicio</a>
+        <a href="productos.html" class="navbar__link" id="nav-productos">Productos</a>
+        <a href="contacto.html" class="navbar__link" id="nav-contacto">Contáctanos</a>
+
+        <!-- Admin-only links -->
+        <a href="ventas.html" class="navbar__link navbar__link--admin" id="nav-ventas">Ventas</a>
+        <a href="gestion.html" class="navbar__link navbar__link--admin" id="nav-gestion">Gestión</a>
+
+        <a href="carrito.html" class="navbar__cart" id="nav-cart" style="color: var(--color-gold);">
+          <svg class="navbar__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          Carrito
+          <span class="navbar__cart-badge" id="cartBadge">0</span>
+        </a>
+
+        <button class="navbar__login-btn" id="loginBtn">Acceder</button>
+      </div>
+
+      <button class="navbar__hamburger" id="hamburger" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========== PAGE HEADER ========== -->
+  <header class="page-header">
+    <span class="page-header__tag">Tu Selección</span>
+    <h1 class="page-header__title">Carrito de Compras</h1>
+    <p class="page-header__subtitle">Revisa tus yardas antes de completar el pedido</p>
+  </header>
+
+  <!-- ========== CART SECTION ========== -->
+  <section class="cart-page">
+    <div class="cart-page__container" id="cartContainer">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <!-- ========== CHECKOUT SUCCESS OVERLAY ========== -->
+  <div class="checkout-success" id="checkoutSuccess">
+    <div class="checkout-success__card">
+      <div class="checkout-success__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h2 class="checkout-success__title">¡Pedido Confirmado!</h2>
+      <p class="checkout-success__text">Gracias por tu compra. Hemos recibido tu solicitud y comenzaremos a preparar tus telas inmediatamente.</p>
+      <span class="checkout-success__order-id" id="orderIdDisplay">Orden #0000</span>
+      <a href="productos.html" class="checkout-success__btn">Volver al Catálogo</a>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer" id="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <h3 class="footer__brand-name">Atelier</h3>
+        <p class="footer__brand-desc">Telas premium y diseño de moda personalizado. Donde la calidad se encuentra con la creatividad.</p>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Navegación</h4>
+        <a href="index.html" class="footer__link">Inicio</a>
+        <a href="productos.html" class="footer__link">Productos</a>
+        <a href="contacto.html" class="footer__link">Contáctanos</a>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Servicios</h4>
+        <a href="#" class="footer__link">Telas por Yarda</a>
+        <a href="#" class="footer__link">Diseño Personalizado</a>
+        <a href="#" class="footer__link">Confección a Medida</a>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Contacto</h4>
+        <a href="#" class="footer__link">info@atelier.com</a>
+        <a href="#" class="footer__link">+1 (555) 123-4567</a>
+        <a href="#" class="footer__link">Instagram</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>&copy; 2026 Atelier. Todos los derechos reservados.</span>
+      <span>Diseño & Desarrollo a Medida</span>
+    </div>
+  </footer>
+
+  <!-- ========== LOGIN MODAL ========== -->
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal" role="dialog" aria-labelledby="loginModalTitle">
+      <h2 class="modal__title" id="loginModalTitle">Iniciar Sesión</h2>
+      <p class="modal__subtitle">Acceso exclusivo para administradores</p>
+      <form id="loginForm">
+        <div class="modal__field">
+          <label class="modal__label" for="loginUser">Usuario</label>
+          <input class="modal__input" type="text" id="loginUser" placeholder="Ingresa tu usuario" autocomplete="username" required>
+        </div>
+        <div class="modal__field">
+          <label class="modal__label" for="loginPass">Contraseña</label>
+          <input class="modal__input" type="password" id="loginPass" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
+        </div>
+        <p class="modal__error" id="loginError">Usuario o contraseña incorrectos.</p>
+        <button type="submit" class="modal__submit">Ingresar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/carrito.js"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Catálogo de telas premium. Seda, algodón, lino, satén y más. Compra por yarda con nuestra calculadora de medidas integrada.">
+  <title>Productos — Atelier | Telas Premium</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar navbar--solid" id="navbar">
+    <div class="navbar__container">
+      <a href="index.html" class="navbar__logo">Atelier</a>
+
+      <div class="navbar__menu" id="navMenu">
+        <a href="index.html" class="navbar__link" id="nav-home">Inicio</a>
+        <a href="productos.html" class="navbar__link navbar__link--active" id="nav-productos">Productos</a>
+        <a href="contacto.html" class="navbar__link" id="nav-contacto">Contáctanos</a>
+
+        <!-- Admin-only links -->
+        <a href="ventas.html" class="navbar__link navbar__link--admin" id="nav-ventas">Ventas</a>
+        <a href="gestion.html" class="navbar__link navbar__link--admin" id="nav-gestion">Gestión</a>
+
+        <a href="carrito.html" class="navbar__cart" id="nav-cart">
+          <svg class="navbar__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          Carrito
+          <span class="navbar__cart-badge" id="cartBadge">0</span>
+        </a>
+
+        <button class="navbar__login-btn" id="loginBtn">Acceder</button>
+      </div>
+
+      <button class="navbar__hamburger" id="hamburger" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========== PAGE HEADER ========== -->
+  <header class="page-header">
+    <span class="page-header__tag">Nuestro Catálogo</span>
+    <h1 class="page-header__title">Telas Premium</h1>
+    <p class="page-header__subtitle">Selecciona, calcula y compra las mejores telas por yarda</p>
+  </header>
+
+  <!-- ========== CATALOG ========== -->
+  <section class="catalog" id="catalogSection">
+    <div class="catalog__container">
+
+      <!-- Search -->
+      <div class="catalog__search">
+        <div class="catalog__search-wrapper">
+          <svg class="catalog__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" class="catalog__search-input" id="catalogSearch" placeholder="Buscar telas por nombre, tipo o color...">
+        </div>
+      </div>
+
+      <!-- Category Filters -->
+      <div class="catalog__filters" id="catalogFilters">
+        <button class="catalog__filter-btn catalog__filter-btn--active" data-category="all">Todas</button>
+        <button class="catalog__filter-btn" data-category="seda">Seda</button>
+        <button class="catalog__filter-btn" data-category="algodón">Algodón</button>
+        <button class="catalog__filter-btn" data-category="lino">Lino</button>
+        <button class="catalog__filter-btn" data-category="satén">Satén</button>
+        <button class="catalog__filter-btn" data-category="encaje">Encaje</button>
+        <button class="catalog__filter-btn" data-category="terciopelo">Terciopelo</button>
+      </div>
+
+      <!-- Results Count -->
+      <p class="catalog__results" id="catalogResults"></p>
+
+      <!-- Product Grid -->
+      <div class="catalog__grid" id="catalogGrid">
+        <!-- Products rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PRODUCT DETAIL MODAL ========== -->
+  <div class="product-modal" id="productModal">
+    <div class="product-modal__content">
+      <button class="product-modal__close" id="productModalClose" aria-label="Cerrar">✕</button>
+
+      <!-- Image side -->
+      <div class="product-modal__image">
+        <div class="product-modal__image-placeholder" id="modalImage"></div>
+      </div>
+
+      <!-- Details side -->
+      <div class="product-modal__details">
+        <span class="product-modal__category" id="modalCategory"></span>
+        <h2 class="product-modal__name" id="modalName"></h2>
+        <p class="product-modal__desc" id="modalDesc"></p>
+
+        <!-- Specs -->
+        <div class="product-modal__specs" id="modalSpecs">
+          <div class="product-modal__spec">
+            <span class="product-modal__spec-label">Material</span>
+            <span class="product-modal__spec-value" id="modalMaterial"></span>
+          </div>
+          <div class="product-modal__spec">
+            <span class="product-modal__spec-label">Ancho</span>
+            <span class="product-modal__spec-value" id="modalWidth"></span>
+          </div>
+          <div class="product-modal__spec">
+            <span class="product-modal__spec-label">Peso</span>
+            <span class="product-modal__spec-value" id="modalWeight"></span>
+          </div>
+          <div class="product-modal__spec">
+            <span class="product-modal__spec-label">Disponible</span>
+            <span class="product-modal__spec-value" id="modalStock"></span>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="product-modal__price-row">
+          <span class="product-modal__price" id="modalPrice"></span>
+          <span class="product-modal__price-unit">/ yarda</span>
+        </div>
+
+        <!-- Yard Calculator -->
+        <div class="yard-calc">
+          <label class="yard-calc__label">Cantidad de yardas</label>
+          <div class="yard-calc__row">
+            <div class="yard-calc__stepper">
+              <button class="yard-calc__stepper-btn" id="yardMinus" type="button" aria-label="Disminuir">−</button>
+              <input type="number" class="yard-calc__input" id="yardInput" value="1" min="1" max="100" step="0.5">
+              <button class="yard-calc__stepper-btn" id="yardPlus" type="button" aria-label="Aumentar">+</button>
+            </div>
+            <div class="yard-calc__total">
+              <span class="yard-calc__total-label">Total</span>
+              <div class="yard-calc__total-price" id="yardTotal">$0.00</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add to Cart -->
+        <button class="product-modal__add-cart" id="addToCartBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          Agregar al Carrito
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TOAST ========== -->
+  <div class="toast" id="toast">
+    <svg class="toast__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    <span id="toastMessage">Producto agregado al carrito</span>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer" id="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <h3 class="footer__brand-name">Atelier</h3>
+        <p class="footer__brand-desc">Telas premium y diseño de moda personalizado. Donde la calidad se encuentra con la creatividad.</p>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Navegación</h4>
+        <a href="index.html" class="footer__link">Inicio</a>
+        <a href="productos.html" class="footer__link">Productos</a>
+        <a href="contacto.html" class="footer__link">Contáctanos</a>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Servicios</h4>
+        <a href="#" class="footer__link">Telas por Yarda</a>
+        <a href="#" class="footer__link">Diseño Personalizado</a>
+        <a href="#" class="footer__link">Confección a Medida</a>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Contacto</h4>
+        <a href="#" class="footer__link">info@atelier.com</a>
+        <a href="#" class="footer__link">+1 (555) 123-4567</a>
+        <a href="#" class="footer__link">Instagram</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>&copy; 2026 Atelier. Todos los derechos reservados.</span>
+      <span>Diseño & Desarrollo a Medida</span>
+    </div>
+  </footer>
+
+  <!-- ========== LOGIN MODAL ========== -->
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal" role="dialog" aria-labelledby="modalTitle">
+      <h2 class="modal__title" id="loginModalTitle">Iniciar Sesión</h2>
+      <p class="modal__subtitle">Acceso exclusivo para administradores</p>
+      <form id="loginForm">
+        <div class="modal__field">
+          <label class="modal__label" for="loginUser">Usuario</label>
+          <input class="modal__input" type="text" id="loginUser" placeholder="Ingresa tu usuario" autocomplete="username" required>
+        </div>
+        <div class="modal__field">
+          <label class="modal__label" for="loginPass">Contraseña</label>
+          <input class="modal__input" type="password" id="loginPass" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
+        </div>
+        <p class="modal__error" id="loginError">Usuario o contraseña incorrectos.</p>
+        <button type="submit" class="modal__submit">Ingresar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/productos.js"></script>
+</body>
+</html>

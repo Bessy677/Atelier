@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Inventario — Panel de Administración | Atelier</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Inline additions specific to Gestion */
+    .admin-table-input {
+      width: 80px;
+      padding: 4px 8px;
+      border: 1px solid var(--color-silver);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+    .admin-table-input:focus {
+      outline: none;
+      border-color: var(--color-gold);
+    }
+  </style>
+</head>
+<body class="is-admin">
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar navbar--solid" id="navbar">
+    <div class="navbar__container">
+      <a href="index.html" class="navbar__logo">Atelier <span style="font-size: 0.5em; color: var(--color-gold); letter-spacing: 0.1em; text-transform: uppercase;">Admin</span></a>
+
+      <div class="navbar__menu" id="navMenu">
+        <a href="index.html" class="navbar__link" id="nav-home">Inicio</a>
+        <a href="productos.html" class="navbar__link" id="nav-productos">Productos</a>
+        <a href="contacto.html" class="navbar__link" id="nav-contacto">Contáctanos</a>
+
+        <!-- Admin-only links -->
+        <a href="ventas.html" class="navbar__link navbar__link--admin" id="nav-ventas">Ventas</a>
+        <a href="gestion.html" class="navbar__link navbar__link--admin navbar__link--active" id="nav-gestion">Gestión</a>
+
+        <a href="carrito.html" class="navbar__cart" id="nav-cart">
+          <svg class="navbar__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          Carrito
+          <span class="navbar__cart-badge" id="cartBadge">0</span>
+        </a>
+
+        <button class="navbar__login-btn" id="loginBtn">Salir</button>
+      </div>
+
+      <button class="navbar__hamburger" id="hamburger" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========== ADMIN DASHBOARD: GESTION ========== -->
+  <section class="admin-page">
+    <div class="admin__container" id="adminContent" style="display: none;">
+      
+      <div class="admin-header">
+        <div>
+          <h1 class="admin-header__title">Gestión de Inventario</h1>
+          <p class="admin-header__subtitle">Actualiza precios, stock y visibilidad del catálogo de telas.</p>
+        </div>
+        <div class="admin-header__actions">
+          <button class="admin-btn" id="addProductBtn">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Nuevo Producto
+          </button>
+          <button class="admin-btn admin-btn--outline" id="saveBtn">Guardar Cambios</button>
+        </div>
+      </div>
+
+      <div class="admin-table-wrapper">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Precio x Yarda ($)</th>
+              <th>Stock (Yardas)</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryTableBody">
+            <!-- Injected by JS -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- Denied State -->
+    <div class="cart-empty" id="accessDenied" style="display: none; padding-top: 10vh;">
+      <div class="cart-empty__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0110 0v4"></path>
+        </svg>
+      </div>
+      <h2 class="cart-empty__title">Acceso Restringido</h2>
+      <p class="cart-empty__text">Debes iniciar sesión como administrador para ver esta página.</p>
+      <a href="index.html" class="cart-empty__cta">Volver al Inicio</a>
+    </div>
+  </section>
+
+  <!-- ========== ADD PRODUCT MODAL ========== -->
+  <div class="modal-backdrop" id="addProductModal">
+    <div class="modal" role="dialog" aria-labelledby="addProductTitle" style="max-width: 600px;">
+      <h2 class="modal__title" id="addProductTitle">Añadir Nuevo Producto</h2>
+      <p class="modal__subtitle">Sube una imagen o usa un color de fondo para crear la tela.</p>
+      
+      <form id="addProductForm">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="modal__field">
+            <label class="modal__label" for="newProdName">Nombre de la Tela</label>
+            <input class="modal__input" type="text" id="newProdName" required>
+          </div>
+          <div class="modal__field">
+            <label class="modal__label" for="newProdCategory">Categoría</label>
+            <select class="modal__input" id="newProdCategory" style="background: var(--color-white);" required>
+              <option value="seda">Seda</option>
+              <option value="algodon">Algodón</option>
+              <option value="lino">Lino</option>
+              <option value="saten">Satén</option>
+              <option value="encaje">Encaje</option>
+              <option value="terciopelo">Terciopelo</option>
+            </select>
+          </div>
+          <div class="modal__field">
+            <label class="modal__label" for="newProdPrice">Precio x Yarda ($)</label>
+            <input class="modal__input" type="number" step="0.5" min="1" id="newProdPrice" required>
+          </div>
+          <div class="modal__field">
+            <label class="modal__label" for="newProdStock">Stock Inicial</label>
+            <input class="modal__input" type="number" step="1" min="0" id="newProdStock" required>
+          </div>
+        </div>
+
+        <div class="modal__field" style="margin-top: 1rem;">
+          <label class="modal__label" for="newProdImage">Imagen Real (Sube una foto de tu computadora)</label>
+          <input class="modal__input" type="file" id="newProdImage" accept="image/*" style="padding: 10px;">
+          <small style="color: var(--color-medium-gray); font-size: 0.75rem; display: block; margin-top: 4px;">Si no subes una imagen, se asignará un color elegante automáticamente.</small>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+          <button type="button" class="admin-btn admin-btn--outline" id="cancelAddProduct" style="flex: 1; justify-content: center;">Cancelar</button>
+          <button type="submit" class="admin-btn" style="flex: 1; justify-content: center;">Crear Producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== LOGIN MODAL (Shared) ========== -->
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal" role="dialog" aria-labelledby="loginModalTitle">
+      <h2 class="modal__title" id="loginModalTitle">Iniciar Sesión</h2>
+      <p class="modal__subtitle">Acceso exclusivo para administradores</p>
+      <form id="loginForm">
+        <div class="modal__field">
+          <label class="modal__label" for="loginUser">Usuario</label>
+          <input class="modal__input" type="text" id="loginUser" placeholder="Ingresa tu usuario" autocomplete="username" required>
+        </div>
+        <div class="modal__field">
+          <label class="modal__label" for="loginPass">Contraseña</label>
+          <input class="modal__input" type="password" id="loginPass" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
+        </div>
+        <p class="modal__error" id="loginError">Usuario o contraseña incorrectos.</p>
+        <button type="submit" class="modal__submit">Ingresar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/gestion.js"></script>
+</body>
+</html>
